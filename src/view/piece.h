@@ -1,9 +1,11 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include "config.h"
 #include <QGraphicsPixmapItem>
-
 class Piece : QGraphicsPixmapItem {
+
+  using Type = Config::Type;
 
   static QPixmap *blackPixmap;
   static QPixmap *whitePixmap;
@@ -13,8 +15,6 @@ class Piece : QGraphicsPixmapItem {
   static void initialize();
 
 public:
-  enum Type : char { WHITE = 'w', BLACK = 'b', EMPTY = 'e' };
-
   explicit Piece(QGraphicsItem *parent = nullptr);
 
 public slots:
@@ -23,7 +23,7 @@ public slots:
   void laozi(Type const &type);
 
 private:
-  Type type_ = EMPTY;
+  Type type_ = Config::EMPTY;
 
   void updatePiece();
 };

@@ -18,21 +18,12 @@ Piece::Piece(QGraphicsItem *parent) : QGraphicsPixmapItem(parent) {
 }
 
 void Piece::flip() {
-  switch (type_) {
-  case WHITE:
-    type_ = BLACK;
-    break;
-  case BLACK:
-    type_ = EMPTY;
-    break;
-  default:
-    break;
-  }
+  type_ = ~type_;
   updatePiece();
 }
 
 void Piece::laozi(const Piece::Type &type) {
-  if (type_ == EMPTY) {
+  if (!!type_) {
     type_ = type;
     updatePiece();
   }
@@ -40,10 +31,10 @@ void Piece::laozi(const Piece::Type &type) {
 
 void Piece::updatePiece() {
   switch (type_) {
-  case WHITE:
+  case Config::WHITE:
     setPixmap(*whitePixmap);
     break;
-  case BLACK:
+  case Config::BLACK:
     setPixmap(*blackPixmap);
     break;
   default:

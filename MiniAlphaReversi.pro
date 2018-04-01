@@ -22,18 +22,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += \
+                src
+
 SOURCES += \
         src/main.cpp \
         src/view/mainwindow.cpp \
-    src/view/piece.cpp \
-    src/view/board.cpp \
-    src/view/gameview.cpp
+        src/view/piece.cpp \
+        src/view/board.cpp \
+        src/view/gameview.cpp \
+        src/logic/rule.cpp
 
 HEADERS += \
         src/view/mainwindow.h \
-    src/view/piece.h \
-    src/view/board.h \
-    src/view/gameview.h
+        src/view/piece.h \
+        src/view/board.h \
+        src/view/gameview.h \
+        src/logic/rule.h \
+        src/config.h
 
 FORMS +=
 

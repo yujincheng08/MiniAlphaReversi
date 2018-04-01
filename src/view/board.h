@@ -1,13 +1,11 @@
 #ifndef BOARD_H
 #define BOARD_H
-
+#include "config.h"
 #include <QGraphicsItemGroup>
 #include <QGraphicsPixmapItem>
 
 class Board : public QGraphicsItemGroup {
-  // 8x8 size
-  static unsigned constexpr SIZE = 8u;
-  static unsigned constexpr LINES_COUNT = SIZE + 1u;
+  static unsigned constexpr LINES_COUNT = Config::SIZE + 1u;
 
 public:
   explicit Board(QGraphicsItem *parent = nullptr);
