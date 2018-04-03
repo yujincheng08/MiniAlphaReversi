@@ -4,6 +4,7 @@
 #include <config.h>
 #include <initializer_list>
 #include <tuple>
+#include <vector>
 
 namespace Config {
 enum Type : char;
@@ -18,9 +19,10 @@ public:
   inline decltype(auto) type() const { return std::get<2>(*this); }
 };
 
-class Movement : public QVector<Move> {
+class Movement : public std::vector<Move> {
 public:
-  inline Movement(const std::initializer_list<Move> &moves) : QVector(moves) {}
+  inline Movement() {}
+  inline Movement(const std::initializer_list<Move> &moves) : vector(moves) {}
 };
 
 #endif // MOVEMENT_H

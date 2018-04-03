@@ -17,7 +17,7 @@ public:
   inline const Composition composition() const { return composition_; }
 
 signals:
-
+  void changed(const Movement &movement);
 public slots:
   void reset();
   void laozi(size_t const &x, size_t const &y, Config::Type const &player);
