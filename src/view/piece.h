@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <QGraphicsPixmapItem>
+
 class Piece : QGraphicsPixmapItem {
 
   using Type = Config::Type;

@@ -9,9 +9,8 @@ Rule::Rule(QObject *parent) : QObject(parent) {
 
 void Rule::reset() {
   for (auto &init : Config::initPieces) {
-    Q_ASSERT(Config::xOf(init) < Config::SIZE &&
-             Config::yOf(init) < Config::SIZE);
-    composition_[Config::xOf(init)][Config::yOf(init)] = Config::typeOf(init);
+    Q_ASSERT(init.x() < Config::SIZE && init.y() < Config::SIZE);
+    composition_[init.x()][init.y()] = init.type();
   }
 }
 

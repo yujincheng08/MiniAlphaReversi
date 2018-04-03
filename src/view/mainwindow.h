@@ -15,5 +15,4 @@ public:
 private:
   GameView *gameview = new GameView(this);
 };
-
 #endif // MAINWINDOW_H

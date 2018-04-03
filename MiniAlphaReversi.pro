@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+CONFIG += c++14
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = MiniAlphaReversi
@@ -39,7 +41,8 @@ HEADERS += \
         src/view/board.h \
         src/view/gameview.h \
         src/logic/rule.h \
-        src/config.h
+        src/config.h \
+    src/logic/movement.h
 
 FORMS +=
 
