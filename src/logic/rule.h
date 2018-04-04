@@ -16,13 +16,14 @@ public:
 
   inline const Composition composition() const { return composition_; }
 
+  bool valid(size_t const &x, size_t const &y,
+             Config::Type const &player) const;
+  Movement availableMovement(const Config::Type &player) const;
 signals:
   void changed(const Movement &movement);
 public slots:
   void reset();
   void laozi(size_t const &x, size_t const &y, Config::Type const &player);
-  bool valid(size_t const &x, size_t const &y,
-             Config::Type const &player) const;
 
 private:
   Composition composition_ = Composition(Config::SIZE);
