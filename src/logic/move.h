@@ -19,12 +19,4 @@ public:
   inline decltype(auto) type() const { return std::get<2>(*this); }
 };
 
-// using std::vector instead of QVector for the reason that QVector requires
-// default constructor while Move doesn't have one.
-class Movement : public std::vector<Move> {
-public:
-  inline Movement() {}
-  inline Movement(const std::initializer_list<Move> &moves) : vector(moves) {}
-};
-
 #endif // MOVEMENT_H

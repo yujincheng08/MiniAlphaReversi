@@ -234,7 +234,7 @@ bool Rule::valid(const size_t &x, const size_t &y,
   return false;
 }
 
-Movement Rule::availableMovement(Config::Type const &player) const {
+Rule::Movement Rule::availableMovement(Config::Type const &player) const {
   Movement movement;
   for (size_t i = 0u; i < Config::SIZE; ++i)
     for (size_t j = 0u; j < Config::SIZE; ++j)

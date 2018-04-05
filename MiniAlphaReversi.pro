@@ -42,7 +42,8 @@ HEADERS += \
         src/view/gameview.h \
         src/logic/rule.h \
         src/config.h \
-    src/logic/movement.h
+    src/logic/position.h \
+    src/logic/move.h
 
 FORMS +=
 

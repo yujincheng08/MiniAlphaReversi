@@ -10,6 +10,7 @@ class Rule : public QObject {
   Q_OBJECT
 
   using Composition = Config::Composition;
+  using Movement = Config::Movement;
 
 public:
   explicit Rule(QObject *parent = nullptr);
