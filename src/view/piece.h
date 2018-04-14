@@ -1,11 +1,10 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include "config.h"
 #include <QGraphicsPixmapItem>
+#include "config.h"
 
 class Piece : QGraphicsPixmapItem {
-
   using Type = Config::Type;
 
   static QPixmap *blackPixmap;
@@ -15,18 +14,18 @@ class Piece : QGraphicsPixmapItem {
 
   static void initialize();
 
-public:
+ public:
   explicit Piece(QGraphicsItem *parent = nullptr);
 
-public slots:
+ public slots:
   void flip();
 
   void laozi(Type const &type);
 
-private:
-  Type type_ = Config::EMPTY;
+ private:
+  Type type_{Config::EMPTY};
 
   void updatePiece();
 };
 
-#endif // PIECE_H
+#endif  // PIECE_H

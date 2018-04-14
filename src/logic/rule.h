@@ -1,33 +1,50 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include "config.h"
 #include <QObject>
 #include <QPoint>
 #include <QVector>
+#include "config.h"
+#include "logic/position.h"
 
 class Rule : public QObject {
   Q_OBJECT
 
-  using Composition = Config::Composition;
+  using State = Config::State;
   using Movement = Config::Movement;
 
-public:
+ public:
   explicit Rule(QObject *parent = nullptr);
 
-  inline const Composition composition() const { return composition_; }
+  inline const State state() const { return state_; }
+
+  bool valid(size_t const &x, size_t const &y, Config::Type const &player,
+             State const &state) const;
 
   bool valid(size_t const &x, size_t const &y,
-             Config::Type const &player) const;
-  Movement availableMovement(const Config::Type &player) const;
-signals:
-  void changed(const Movement &movement);
-public slots:
+             Config::Type const &player) const {
+    return valid(x, y, player, state_);
+  }
+
+  Movement availableMovement(Config::Type const &player,
+                             State const &state) const;
+
+  inline Movement availableMovement(Config::Type const &player) const {
+    return availableMovement(player, state_);
+  }
+
+  Movement priorityMoves(Config::PriorityTable const &priorityTable,
+                         Config::Type const &player, State const &state) const;
+ signals:
+  void changed(Movement const &movement);
+
+ public slots:
   void reset();
+
   void laozi(size_t const &x, size_t const &y, Config::Type const &player);
 
-private:
-  Composition composition_ = Composition(Config::SIZE);
+ private:
+  State state_{Config::SIZE};
 };
 
-#endif // RULE_H
+#endif  // RULE_H

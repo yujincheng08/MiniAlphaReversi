@@ -7,13 +7,12 @@
 #include <QGraphicsView>
 
 class GameView : public QGraphicsView {
-
-public:
+ public:
   explicit GameView(QWidget *parent = nullptr);
 
-private:
-  QGraphicsScene *scene_ = new QGraphicsScene(this);
-  Board *board_ = new Board;
+ private:
+  QGraphicsScene *scene_{new QGraphicsScene(this)};
+  Board *board_{new Board};
 };
 
-#endif // GAMEVIEW_H
+#endif  // GAMEVIEW_H

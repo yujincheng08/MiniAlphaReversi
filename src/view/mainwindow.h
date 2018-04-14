@@ -8,11 +8,11 @@
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   explicit MainWindow(QWidget *parent = 0);
   virtual ~MainWindow();
 
-private:
-  GameView *gameview = new GameView(this);
+ private:
+  GameView *gameview{new GameView(this)};
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

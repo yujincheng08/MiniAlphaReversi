@@ -4,10 +4,10 @@
 #include <tuple>
 
 class Position : public std::tuple<size_t, size_t> {
-public:
+ public:
   inline Position(size_t const &x, size_t const &y) : tuple({x, y}) {}
-  inline decltype(auto) x() { return std::get<0>(*this); }
-  inline decltype(auto) y() { return std::get<1>(*this); }
+  inline decltype(auto) x() const { return std::get<0>(*this); }
+  inline decltype(auto) y() const { return std::get<1>(*this); }
 };
 
-#endif // POSITION_H
+#endif  // POSITION_H
