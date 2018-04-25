@@ -9,6 +9,11 @@
 namespace Config {
 static unsigned constexpr SIZE = 8U;
 
+static unsigned constexpr PIECE_SIZE = 80U;
+
+static unsigned constexpr WINDOW_WIDTH = (SIZE + 2) * PIECE_SIZE;
+static unsigned constexpr WINDOW_HEIGHT = (SIZE + 2) * PIECE_SIZE;
+
 enum Type : char { WHITE = 'w', BLACK = 'b', EMPTY = 'e' };
 
 static Type constexpr first = BLACK;

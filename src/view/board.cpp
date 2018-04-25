@@ -7,10 +7,16 @@ Board::Board(QGraphicsItem *parent) : QGraphicsItemGroup(parent) {
 
 void Board::drawLines() {
   for (unsigned i = 0; i < LINES_COUNT; ++i) {
-    new QGraphicsLineItem(10 + i * 10, 10, 10 + i * 10, 90, colLines);
+    new QGraphicsLineItem(Config::PIECE_SIZE + i * Config::PIECE_SIZE,
+                          Config::PIECE_SIZE,
+                          Config::PIECE_SIZE + i * Config::PIECE_SIZE,
+                          (1 + Config::SIZE) * Config::PIECE_SIZE, colLines);
   }
 
   for (unsigned i = 0; i < LINES_COUNT; ++i) {
-    new QGraphicsLineItem(10, 10 + i * 10, 90, 10 + i * 10, rowLines);
+    new QGraphicsLineItem(
+        Config::PIECE_SIZE, Config::PIECE_SIZE + i * Config::PIECE_SIZE,
+        (Config::SIZE + 1) * Config::PIECE_SIZE,
+        Config::PIECE_SIZE + i * Config::PIECE_SIZE, rowLines);
   }
 }
