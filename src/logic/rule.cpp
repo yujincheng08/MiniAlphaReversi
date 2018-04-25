@@ -10,60 +10,65 @@ void Rule::reset() {
     Q_ASSERT(init.x() < Config::SIZE && init.y() < Config::SIZE);
     state_[init.x()][init.y()] = init.type();
   }
-  emit changed(Config::initPieces);
+  player_ = Config::first;
+  // emit changed(Config::initPieces);
 }
 
-void Rule::laozi(size_t const &x, size_t const &y, Config::Type const &player) {
-  Q_ASSERT(player != Config::EMPTY && x < Config::SIZE && y < Config::SIZE);
-  if (valid(x, y, player)) state_[x][y] = player;
+void Rule::laozi(size_t const &x, size_t const &y) {
+  Q_ASSERT(player_ != Config::EMPTY && x < Config::SIZE && y < Config::SIZE);
+  if (valid(x, y))
+    state_[x][y] = player_;
+  else
+    return;
   Movement movement;
+  movement.push_back({x, y, player_});
   // Left to right
-  if (x < Config::SIZE - 2u && state_[x + 1u][y] == ~player) {
+  if (x < Config::SIZE - 2u && state_[x + 1u][y] == ~player_) {
     auto range = Config::SIZE - x;
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x + i][y] == player)
+      if (state_[x + i][y] == player_)
         for (size_t j = 1u; j < i; ++j) {
-          state_[x + j][y] = player;
-          movement.push_back({x + j, y, player});
+          state_[x + j][y] = player_;
+          movement.push_back({x + j, y, player_});
         }
       if (!!state_[x + i][y]) break;
     }
   }
 
   // Right to left
-  if (x > 2u && state_[x - 1u][y] == ~player) {
+  if (x > 2u && state_[x - 1u][y] == ~player_) {
     auto range = x + 1u;
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x - i][y] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x - j][y] = player;
-          movement.push_back({x - j, y, player});
+      if (state_[x - i][y] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x - j][y] = player_;
+          movement.push_back({x - j, y, player_});
         }
       if (!!state_[x - i][y]) break;
     }
   }
 
   // Top to bottom
-  if (y < Config::SIZE - 2u && state_[x][y + 1u] == ~player) {
+  if (y < Config::SIZE - 2u && state_[x][y + 1u] == ~player_) {
     auto range = Config::SIZE - y;
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x][y + i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x][y + j] = player;
-          movement.push_back({x, y + j, player});
+      if (state_[x][y + i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x][y + j] = player_;
+          movement.push_back({x, y + j, player_});
         }
       if (!!state_[x][y + i]) break;
     }
   }
 
   // Bottom to top
-  if (y > 2u && state_[x][y - 1u] == ~player) {
+  if (y > 2u && state_[x][y - 1u] == ~player_) {
     auto range = y + 1u;
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x][y - i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x][y - j] = player;
-          movement.push_back({x, y - j, player});
+      if (state_[x][y - i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x][y - j] = player_;
+          movement.push_back({x, y - j, player_});
         }
       if (!!state_[x][y - i]) break;
     }
@@ -71,63 +76,64 @@ void Rule::laozi(size_t const &x, size_t const &y, Config::Type const &player) {
 
   // to topright
   if (x < Config::SIZE - 2u && y < Config::SIZE - 1u &&
-      state_[x + 1u][y + 1u] == ~player) {
+      state_[x + 1u][y + 1u] == ~player_) {
     auto range = qMin(Config::SIZE - x, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x + i][y + i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x + j][y + j] = player;
-          movement.push_back({x + j, y + j, player});
+      if (state_[x + i][y + i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x + j][y + j] = player_;
+          movement.push_back({x + j, y + j, player_});
         }
       if (!!state_[x + i][y + i]) break;
     }
   }
 
   // to topleft
-  if (x > 2u && y < Config::SIZE - 2u && state_[x - 1u][y + 1u] == ~player) {
+  if (x > 2u && y < Config::SIZE - 2u && state_[x - 1u][y + 1u] == ~player_) {
     auto range = qMin(x + 1u, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x - i][y + i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x - j][y + j] = player;
-          movement.push_back({x - j, y + j, player});
+      if (state_[x - i][y + i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x - j][y + j] = player_;
+          movement.push_back({x - j, y + j, player_});
         }
       if (!!state_[x - i][y + i]) break;
     }
   }
 
   // to bottom right
-  if (x < Config::SIZE - 2u && y > 2u && state_[x + 1u][y - 1u] == ~player) {
+  if (x < Config::SIZE - 2u && y > 2u && state_[x + 1u][y - 1u] == ~player_) {
     auto range = qMin(Config::SIZE - x, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x + i][y - i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x + j][y - j] = player;
-          movement.push_back({x + j, y - j, player});
+      if (state_[x + i][y - i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x + j][y - j] = player_;
+          movement.push_back({x + j, y - j, player_});
         }
       if (!!state_[x + i][y - i]) break;
     }
   }
 
   // to bottom left
-  if (x > 2u && y > 2u && state_[x - 1u][y - 1u] == ~player) {
+  if (x > 2u && y > 2u && state_[x - 1u][y - 1u] == ~player_) {
     auto range = qMin(x + 1u, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
-      if (state_[x - i][y - i] == player)
-        for (size_t j = 2u; j < i; ++j) {
-          state_[x - j][y - j] = player;
-          movement.push_back({x - j, y - j, player});
+      if (state_[x - i][y - i] == player_)
+        for (size_t j = 1u; j < i; ++j) {
+          state_[x - j][y - j] = player_;
+          movement.push_back({x - j, y - j, player_});
         }
       if (!!state_[x - i][y - i]) break;
     }
   }
+  player_ = ~player_;
   emit changed(movement);
 }
 
 bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
                  State const &state) const {
   Q_ASSERT(!player && x < Config::SIZE && y < Config::SIZE);
-  if (!!state[x][y]) return false;
+  if (!state[x][y]) return false;
 
   // Left to right
   if (x < Config::SIZE - 2u && state[x + 1u][y] == ~player) {

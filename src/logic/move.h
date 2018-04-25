@@ -1,17 +1,17 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include <config.h>
 #include <initializer_list>
 #include <tuple>
 #include <vector>
+#include "config.h"
 
 namespace Config {
 enum Type : char;
 }
 
 class Move : public std::tuple<size_t, size_t, Config::Type> {
-public:
+ public:
   inline Move(size_t const &x, size_t const &y, Config::Type const &t)
       : tuple({x, y, t}) {}
   inline decltype(auto) x() const { return std::get<0>(*this); }
@@ -19,4 +19,4 @@ public:
   inline decltype(auto) type() const { return std::get<2>(*this); }
 };
 
-#endif // MOVEMENT_H
+#endif  // MOVEMENT_H

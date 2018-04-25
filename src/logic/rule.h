@@ -21,16 +21,15 @@ class Rule : public QObject {
   bool valid(size_t const &x, size_t const &y, Config::Type const &player,
              State const &state) const;
 
-  bool valid(size_t const &x, size_t const &y,
-             Config::Type const &player) const {
-    return valid(x, y, player, state_);
+  inline bool valid(size_t const &x, size_t const &y) const {
+    return valid(x, y, player_, state_);
   }
 
   Movement availableMovement(Config::Type const &player,
                              State const &state) const;
 
-  inline Movement availableMovement(Config::Type const &player) const {
-    return availableMovement(player, state_);
+  inline Movement availableMovement() const {
+    return availableMovement(player_, state_);
   }
 
   Movement priorityMoves(Config::PriorityTable const &priorityTable,
@@ -41,10 +40,11 @@ class Rule : public QObject {
  public slots:
   void reset();
 
-  void laozi(size_t const &x, size_t const &y, Config::Type const &player);
+  void laozi(size_t const &x, size_t const &y);
 
  private:
   State state_{Config::SIZE};
+  Config::Type player_ = Config::first;
 };
 
 #endif  // RULE_H

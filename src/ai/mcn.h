@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "config.h"
-#include "src/logic/rule.h"
+#include "logic/rule.h"
 
 /*
  * Monte Carlo Tree Node

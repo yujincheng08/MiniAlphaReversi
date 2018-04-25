@@ -1,22 +1,25 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include "config.h"
+#include <QGraphicsGridLayout>
 #include <QGraphicsItemGroup>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsWidget>
+#include "config.h"
 
 class Board : public QGraphicsItemGroup {
   static unsigned constexpr LINES_COUNT = Config::SIZE + 1u;
 
-public:
+ public:
   explicit Board(QGraphicsItem *parent = nullptr);
 
-private:
+ private:
   QGraphicsPixmapItem *background_ =
       new QGraphicsPixmapItem(QPixmap(":/image/ChessBoard.jpg"), this);
-  QGraphicsItemGroup *rowLines = new QGraphicsItemGroup(this);
-  QGraphicsItemGroup *colLines = new QGraphicsItemGroup(this);
+  QGraphicsItemGroup *rowLines_{new QGraphicsItemGroup(this)};
+  QGraphicsItemGroup *colLines_{new QGraphicsItemGroup(this)};
 
   void drawLines();
+  void addPieces();
 };
 
-#endif // BOARD_H
+#endif  // BOARD_H

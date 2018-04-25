@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QThreadPool>
 #include "config.h"
-#include "src/ai/mcn.h"
+#include "mcn.h"
 
 /*
  * Mento Carlo Tree

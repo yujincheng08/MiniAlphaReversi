@@ -36,7 +36,8 @@ SOURCES += \
         src/logic/rule.cpp \
     src/ai/minmax.cpp \
     src/ai/mct.cpp \
-    src/ai/mcn.cpp
+    src/ai/mcn.cpp \
+    src/view/pieces.cpp
 
 HEADERS += \
         src/view/mainwindow.h \
@@ -49,7 +50,8 @@ HEADERS += \
     src/logic/move.h \
     src/ai/minmax.h \
     src/ai/mct.h \
-    src/ai/mcn.h
+    src/ai/mcn.h \
+    src/view/pieces.h
 
 FORMS +=
 

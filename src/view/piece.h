@@ -2,15 +2,19 @@
 #define PIECE_H
 
 #include <QGraphicsPixmapItem>
+#include <QObject>
 #include "config.h"
 
-class Piece : QGraphicsPixmapItem {
+class Piece : public QObject, public QGraphicsPixmapItem {
+  Q_OBJECT
   using Type = Config::Type;
 
   static QPixmap *blackPixmap;
   static QPixmap *whitePixmap;
   static QPixmap *emptyPixmap;
-  static bool initilized;
+  static qreal whiteScale;
+  static qreal blackScale;
+  static bool initialized;
 
   static void initialize();
 
@@ -19,7 +23,7 @@ class Piece : QGraphicsPixmapItem {
 
  public slots:
   void flip();
-
+  void reset();
   void laozi(Type const &type);
 
  private:
