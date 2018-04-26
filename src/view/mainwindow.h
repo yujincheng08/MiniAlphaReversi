@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "ai/mct.h"
 #include "gameview.h"
 #include "logic/rule.h"
 
@@ -18,6 +19,8 @@ class MainWindow : public QMainWindow {
  private:
   Rule *rule_{new Rule(this)};
   GameView *gameview{new GameView(this)};
+  MCT *mct_{new MCT(this)};
+
   void createConnections();
 };
 #endif  // MAINWINDOW_H

@@ -1,4 +1,6 @@
 #include "rule.h"
+#include <QDebug>
+#include <iostream>
 
 Rule::Rule(QObject *parent) : QObject(parent) { reset(); }
 
@@ -11,7 +13,7 @@ void Rule::reset() {
     state_[init.x()][init.y()] = init.type();
   }
   player_ = Config::first;
-  emit changed(Config::initPieces, availableMovement());
+  // emit changed(Config::initPieces, availableMovement());
 }
 
 void Rule::laozi(size_t const &x, size_t const &y) {
@@ -130,7 +132,28 @@ void Rule::laozi(size_t const &x, size_t const &y) {
   auto available = availableMovement();
   if (available.size() == 0) player_ = ~player_;
   available = availableMovement();
+
   emit changed(movement, available);
+
+  whiteCount = 0;
+  blackCount = 0;
+  //   check the state_ map
+  for (unsigned int i = 0; i < Config::SIZE; i++) {
+    for (unsigned int j = 0; j < Config::SIZE; j++) {
+      if (state_[i][j] == Config::WHITE) {
+        whiteCount++;
+      }
+      if (state_[i][j] == Config::BLACK) {
+        blackCount++;
+      }
+      std::cout << (char)state_[i][j] << "\t";
+    }
+    std::cout << std::endl;
+  }
+
+  if (isGameOver()) {
+    qDebug() << "Game Over";
+  }
 }
 
 bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
@@ -222,16 +245,30 @@ Rule::Movement Rule::availableMovement(Config::Type const &player,
   return movement;
 }
 
-Rule::Movement Rule::priorityMoves(Config::PriorityTable const &priorityTable,
-                                   Config::Type const &player,
-                                   const State &state) const {
-  Movement movement;
-  for (auto const &level : priorityTable) {
-    for (auto const &position : level) {
-      if (valid(position.x(), position.y(), player, state))
-        movement.push_back({position.x(), position.y(), player});
-    }
-    if (!movement.empty()) break;
+// Rule::Movement Rule::priorityMoves(Config::PriorityTable const
+// &priorityTable,
+//                                   Config::Type const &player,
+//                                   const State &state) const {
+//  Movement movement;
+//  for (auto const &level : priorityTable) {
+//    for (auto const &position : level) {
+//      if (valid(position.x(), position.y(), player, state))
+//        movement.push_back({position.x(), position.y(), player});
+//    }
+//    if (!movement.empty()) break;
+//  }
+//  return movement;
+//}
+
+bool Rule::isGameOver() {
+  qDebug() << "white: " << whiteCount;
+  qDebug() << "black: " << blackCount;
+
+  // the map is full
+  if ((whiteCount + blackCount == Config::SIZE * Config::SIZE)
+      // both of black and white can not move
+      || (!whiteMovable && !blackMovalbe)) {
+    return true;
   }
-  return movement;
+  return false;
 }

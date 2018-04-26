@@ -5,7 +5,7 @@
 MCN::MCN(State const &lastState, Type const &type, unsigned const &depth,
          Rule const &rule, Movement const &movement, MCN *parent)
     : QObject(parent),
-      state_(lastState + movement),
+      state_(lastState),
       type_(type),
       depth_(depth),
       movement_(movement),

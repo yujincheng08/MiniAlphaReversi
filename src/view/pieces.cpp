@@ -6,8 +6,8 @@ Pieces::Pieces(QGraphicsItem *parent) : QGraphicsItemGroup(parent) {
     pieces_[i].resize(Config::SIZE);
     for (unsigned j = 0u; j < Config::SIZE; ++j) {
       auto piece = new Piece(this);
-      piece->setX((i + 1) * Config::PIECE_SIZE);
-      piece->setY((j + 1) * Config::PIECE_SIZE);
+      piece->setX((j + 1) * Config::PIECE_SIZE);
+      piece->setY((i + 1) * Config::PIECE_SIZE);
       pieces_[i][j] = piece;
     }
   }

@@ -38,7 +38,7 @@ void Piece::laozi(const Piece::Type &type) {
 
 void Piece::setAvaliable(const Piece::Type &type) {
   if (!initialized) return;
-  setOpacity(0.2);
+  setOpacity(0.4);
   laozi(type);
 }
 

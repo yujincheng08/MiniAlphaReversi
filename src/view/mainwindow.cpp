@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   setCentralWidget(gameview);
@@ -17,9 +18,14 @@ MainWindow::~MainWindow() {}
 void MainWindow::reset() {
   gameview->reset();
   rule_->reset();
+  mct_->reset(Config::WHITE);
 }
 
 void MainWindow::createConnections() {
   connect(gameview, &GameView::clicked, rule_, &Rule::laozi);
+
   connect(rule_, &Rule::changed, gameview, &GameView::laozi);
+
+  //  connect(mct_, &MCT::decision, rule_, &Rule::laozi);
+  connect(rule_, &Rule::changed, mct_, &MCT::laozi);
 }

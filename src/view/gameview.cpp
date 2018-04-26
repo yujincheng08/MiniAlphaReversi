@@ -20,5 +20,5 @@ void GameView::mousePressEvent(QMouseEvent *event) {
   auto x = event->x() / Config::PIECE_SIZE - 1;
   auto y = event->y() / Config::PIECE_SIZE - 1;
   if (x >= Config::SIZE || y >= Config::SIZE) return;
-  emit clicked(x, y);
+  emit clicked(y, x);
 }

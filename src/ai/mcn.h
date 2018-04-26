@@ -32,6 +32,8 @@ class MCN : public QObject {
   void backUp(unsigned delta);
 
   inline State state() const { return state_; }
+  inline Type type() const { return type_; }
+  inline unsigned depth() const { return depth_; }
   inline bool expandable() { return remainMovement_.size() > 0; }
   inline bool terminal() { return !expandable() && children().size() == 0; }
   inline Movement movement() { return movement_; }
