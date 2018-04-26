@@ -127,7 +127,10 @@ void Rule::laozi(size_t const &x, size_t const &y) {
     }
   }
   player_ = ~player_;
-  emit changed(movement);
+  auto available = availableMovement();
+  if (available.size() == 0) player_ = ~player_;
+  available = availableMovement();
+  emit changed(movement, available);
 }
 
 bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,

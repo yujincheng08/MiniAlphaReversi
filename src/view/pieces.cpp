@@ -26,3 +26,17 @@ void Pieces::laozi(const Config::Movement &movement) {
     pieces_[move.x()][move.y()]->laozi(move.type());
   }
 }
+
+void Pieces::unsetAvaliable() {
+  for (auto const &move : lastAvaliable_) {
+    pieces_[move.x()][move.y()]->unsetAvaliable();
+  }
+  lastAvaliable_.erase(lastAvaliable_.begin(), lastAvaliable_.end());
+}
+
+void Pieces::setAvaliable(Config::Movement const &avaliable) {
+  for (auto const &move : avaliable) {
+    pieces_[move.x()][move.y()]->setAvaliable(move.type());
+  }
+  lastAvaliable_ = avaliable;
+}

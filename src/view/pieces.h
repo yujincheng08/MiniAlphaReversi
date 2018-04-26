@@ -14,9 +14,12 @@ class Pieces : public QObject, public QGraphicsItemGroup {
  public slots:
   void reset();
   void laozi(Config::Movement const &movement);
+  void unsetAvaliable();
+  void setAvaliable(Config::Movement const &avaliable);
 
  private:
   QVector<QVector<Piece *>> pieces_{Config::SIZE};
+  Config::Movement lastAvaliable_;
 };
 
 #endif  // PIECES_H

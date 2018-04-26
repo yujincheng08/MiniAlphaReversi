@@ -5,6 +5,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
   gameview->setSceneRect(
       QRect(0, 0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT));
+  gameview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  gameview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setFixedSize(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT);
   createConnections();
   reset();

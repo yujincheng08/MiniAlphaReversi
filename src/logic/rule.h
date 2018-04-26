@@ -35,7 +35,7 @@ class Rule : public QObject {
   Movement priorityMoves(Config::PriorityTable const &priorityTable,
                          Config::Type const &player, State const &state) const;
  signals:
-  void changed(Movement const &movement);
+  void changed(Movement const &movement, Movement const &availableMovement);
 
  public slots:
   void reset();

@@ -25,6 +25,8 @@ class Piece : public QObject, public QGraphicsPixmapItem {
   void flip();
   void reset();
   void laozi(Type const &type);
+  void setAvaliable(Type const &type);
+  void unsetAvaliable();
 
  private:
   Type type_{Config::EMPTY};

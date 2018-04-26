@@ -7,8 +7,11 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent) {
   scene_->addItem(pieces_);
 }
 
-void GameView::laozi(const Config::Movement &movement) {
+void GameView::laozi(Config::Movement const &movement,
+                     Config::Movement const &avalialbe) {
+  pieces_->unsetAvaliable();
   pieces_->laozi(movement);
+  pieces_->setAvaliable(avalialbe);
 }
 
 void GameView::mousePressEvent(QMouseEvent *event) {

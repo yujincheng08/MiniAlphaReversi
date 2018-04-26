@@ -14,7 +14,8 @@ class GameView : public QGraphicsView {
   void clicked(size_t const &x, size_t const &y);
 
  public slots:
-  void laozi(Config::Movement const &movement);
+  void laozi(Config::Movement const &movement,
+             Config::Movement const &avalialbe);
   inline void reset() { pieces_->reset(); }
 
  protected:

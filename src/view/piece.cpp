@@ -21,6 +21,7 @@ void Piece::initialize() {
 
 Piece::Piece(QGraphicsItem *parent) : QGraphicsPixmapItem(parent) {
   initialize();
+  setTransformationMode(Qt::SmoothTransformation);
 }
 
 void Piece::flip() {
@@ -35,6 +36,17 @@ void Piece::laozi(const Piece::Type &type) {
   updatePiece();
 }
 
+void Piece::setAvaliable(const Piece::Type &type) {
+  if (!initialized) return;
+  setOpacity(0.2);
+  laozi(type);
+}
+
+void Piece::unsetAvaliable() {
+  setOpacity(1);
+  laozi(Config::EMPTY);
+}
+
 void Piece::updatePiece() {
   if (!initialized) return;
   switch (type_) {
@@ -46,7 +58,8 @@ void Piece::updatePiece() {
       setPixmap(*blackPixmap);
       setScale(blackScale);
       break;
-    default:
+    case Config::EMPTY:
+      setPixmap(*emptyPixmap);
       break;
   }
   update();
