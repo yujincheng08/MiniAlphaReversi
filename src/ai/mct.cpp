@@ -4,9 +4,24 @@
 
 MCT::MCT(QObject *parent) : QObject(parent) { reset(Config::WHITE); }
 
-unsigned MCT::defaultPolicy(MCN *node) const {
-  unsigned reward = 0;
-  return reward;
+int MCT::defaultPolicy(MCN *node) const {
+  auto state = node->state();
+  auto player = node->type();
+  unsigned over = 0u;
+  while (over < 2u) {
+    auto priorityMoves =
+        rule_.priorityMoves(Config::priorityTable, player, state);
+    if (priorityMoves.size() == 0) {
+      player = ~player;
+      ++over;
+      continue;
+    }
+    over = 0u;
+    auto move = priorityMoves[0];
+    state += rule_.apply(state, {move.x(), move.y(), player});
+    player = ~player;
+  }
+  return rule_.judge(state, node->type()) ? 1 : -1;
 }
 
 MCN *MCT::treePolicy() const {
@@ -25,12 +40,10 @@ Move MCT::search() {
     auto node = treePolicy();
     auto delta = defaultPolicy(node);
     backUp(node, delta);
-    break;
   }
   auto choice = root->bestChild(0.0);
-  auto movement = choice->movement();
-  Q_ASSERT(movement.size() == 1u);
-  return movement[0];
+  auto move = choice->move();
+  return move;
 }
 
 void MCT::backUp(MCN *node, const unsigned &delta) const {
@@ -41,19 +54,23 @@ void MCT::backUp(MCN *node, const unsigned &delta) const {
 }
 
 bool MCT::intime() {
+  static unsigned counter = 0;
+  if (counter++ > 3) {
+    counter = 0;
+    return false;
+  }
   return true;  // TODO
 }
 
-void MCT::laozi(const Config::Movement &movement,
-                Config::Movement const &available) {
-  Q_ASSERT(movement.size() > 0);
-  auto x = movement[0].x();
-  auto y = movement[0].y();
+void MCT::laozi(size_t const &x, size_t const &y) {
+  if (!rule_.valid(x, y, root->type(), root->state())) return;
+  qDebug() << "AI Laozi";
   updateTree(x, y);
-
-  //  Move m = search();
-  //  qDebug() << m.x() << " " << m.y();
-  //  emit decision(m.x(), m.y());
+  qDebug() << "Player:" << x << y;
+  Move m = search();
+  qDebug() << "AI: " << m.x() << m.y() << (char)m.type();
+  updateTree(m.x(), m.y());
+  emit decision(m.x(), m.y());
 }
 
 void MCT::reset(Config::Type type) {
@@ -67,21 +84,20 @@ void MCT::reset(Config::Type type) {
     }
   }
   root = new MCN(initstate + Config::initPieces, Config::first, 0u, rule_);
-  new MCN(initstate + Config::initPieces, Config::first, 0u, rule_);
 }
 
 void MCT::updateTree(const size_t &x, const size_t &y) {
   //  root->deleteLater();
   MCN *choice = nullptr;
   for (auto &child : root->children()) {
-    if (child->movement()[0].x() == x && child->movement()[0].y() == y) {
+    if (child->move().x() == x && child->move().y() == y) {
       choice = child;
       break;
     }
   }
   if (choice == nullptr) {
     choice = new MCN(root->state(), ~root->type(), root->depth() + 1, rule_,
-                     Config::Movement{{x, y, root->type()}});
+                     {x, y, root->type()});
   }
   choice->setParent(nullptr);
   root->deleteLater();

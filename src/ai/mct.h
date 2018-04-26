@@ -14,15 +14,14 @@ class MCT : public QObject {
   Q_OBJECT
  public:
   explicit MCT(QObject *parent = nullptr);
-  unsigned defaultPolicy(MCN *node) const;
+  int defaultPolicy(MCN *node) const;
   MCN *treePolicy() const;
   Move search();
 
  signals:
   void decision(size_t const &x, size_t const &y);
  public slots:
-  void laozi(Config::Movement const &movement,
-             Config::Movement const &available);
+  void laozi(size_t const &x, size_t const &y);
   void reset(Config::Type type);
 
  private:

@@ -1,14 +1,15 @@
 #include "mcn.h"
+#include <QDebug>
 #include <QRandomGenerator>
 #include <QtMath>
 
 MCN::MCN(State const &lastState, Type const &type, unsigned const &depth,
-         Rule const &rule, Movement const &movement, MCN *parent)
+         Rule const &rule, Move const &move, MCN *parent)
     : QObject(parent),
-      state_(lastState),
+      state_(lastState + rule.apply(lastState, move)),
       type_(type),
       depth_(depth),
-      movement_(movement),
+      move_(move),
       rule_(rule),
       remainMovement_(rule.availableMovement(type, state_)) {}
 
@@ -29,12 +30,12 @@ MCN *MCN::expand() {
   if (expandable()) {
     auto choice = QRandomGenerator::global()->bounded(remainMovement_.size());
     auto move = remainMovement_.takeAt(choice);
-    return new MCN(state_, ~type_, depth_ + 1, rule_, Movement{move}, this);
+    return new MCN(state_, ~type_, depth_ + 1, rule_, move, this);
   }
   return this;
 }
 
-void MCN::backUp(unsigned delta) {
+void MCN::backUp(int delta) {
   ++N_;
   Q_ += delta;
 }

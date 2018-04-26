@@ -16,7 +16,8 @@ class MCN : public QObject {
   Q_OBJECT
  public:
   explicit MCN(State const &lastState, Type const &type, const unsigned &depth,
-               Rule const &rule, Movement const &movement = Movement(),
+               Rule const &rule,
+               const Move &move = {0, 0, Config::EMPTY},  // dummy
                MCN *parent = nullptr);
 
   MCN *bestChild(const double &c) const;
@@ -29,14 +30,14 @@ class MCN : public QObject {
 
   MCN *expand();
 
-  void backUp(unsigned delta);
+  void backUp(int delta);
 
   inline State state() const { return state_; }
   inline Type type() const { return type_; }
   inline unsigned depth() const { return depth_; }
   inline bool expandable() { return remainMovement_.size() > 0; }
   inline bool terminal() { return !expandable() && children().size() == 0; }
-  inline Movement movement() { return movement_; }
+  inline Move move() { return move_; }
  signals:
 
  public slots:
@@ -48,7 +49,7 @@ class MCN : public QObject {
   State state_;
   Type type_;
   unsigned depth_;
-  Movement movement_;
+  Move move_;
   Rule const &rule_;
   Movement remainMovement_;
   unsigned N_{0u};

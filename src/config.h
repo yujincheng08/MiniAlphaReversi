@@ -9,7 +9,7 @@
 namespace Config {
 static unsigned constexpr SIZE = 8U;
 
-static unsigned constexpr PIECE_SIZE = 80U;
+static unsigned constexpr PIECE_SIZE = 50u;
 
 static unsigned constexpr WINDOW_WIDTH = (SIZE + 2) * PIECE_SIZE;
 static unsigned constexpr WINDOW_HEIGHT = (SIZE + 2) * PIECE_SIZE;
@@ -33,14 +33,16 @@ inline Type operator~(Type const &type) {
 
 inline bool operator!(Type const &type) { return type != EMPTY; }
 
-inline State operator+(State const &state, Movement const &movement) {
-  State newState = state;
-  for (auto const &move : movement) {
-    newState[move.x()][move.y()] = move.type();
-  }
-  return newState;
+inline State operator+=(State &state, Movement const &movement) {
+  for (auto const &move : movement) state[move.x()][move.y()] = move.type();
+  return state;
 }
 
+inline State operator+(State const &state, Movement const &movement) {
+  State newState = state;
+  newState += movement;
+  return newState;
+}
 static Movement const initPieces = {{SIZE / 2U, SIZE / 2U, WHITE},
                                     {SIZE / 2U, SIZE / 2U - 1, BLACK},
                                     {SIZE / 2U - 1, SIZE / 2U, BLACK},

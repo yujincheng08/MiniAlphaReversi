@@ -32,13 +32,15 @@ class Rule : public QObject {
     return availableMovement(player_, state_);
   }
 
-  bool isGameOver();
+  const Movement apply(State const &state, Move const &move) const;
 
-  //  Movement priorityMoves(Config::PriorityTable const &priorityTable,
-  //                         Config::Type const &player, State const &state)
-  //                         const;
+  Movement priorityMoves(Config::PriorityTable const &priorityTable,
+                         Config::Type const &player, State const &state) const;
+
+  bool judge(State const &state, Config::Type const &player) const;
  signals:
   void changed(Movement const &movement, Movement const &availableMovement);
+  void gameOver();
 
  public slots:
   void reset();
@@ -48,10 +50,9 @@ class Rule : public QObject {
  private:
   State state_{Config::SIZE};
   Config::Type player_ = Config::first;
-  int whiteCount = 2;
-  int blackCount = 2;
   bool whiteMovable = true;
   bool blackMovalbe = true;
+  // TODO: how about passing
 };
 
 #endif  // RULE_H
