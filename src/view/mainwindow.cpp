@@ -14,10 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::reset() {
-  rule_->reset();
-  gameview->reset();
-}
+void MainWindow::reset() { rule_->reset(); }
 
 void MainWindow::createConnections() {
   connect(gameview, &GameView::clicked, rule_, &Rule::laozi);

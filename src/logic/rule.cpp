@@ -11,7 +11,7 @@ void Rule::reset() {
     state_[init.x()][init.y()] = init.type();
   }
   player_ = Config::first;
-  // emit changed(Config::initPieces);
+  emit changed(Config::initPieces, availableMovement());
 }
 
 void Rule::laozi(size_t const &x, size_t const &y) {
