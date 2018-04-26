@@ -17,7 +17,7 @@ MCN *MCT::treePolicy() const {
   auto node = root;
   while (!node->terminal()) {
     if (node->expandable())
-      node = node->expand();
+      return node->expand();
     else
       node = node->bestChild(Config::Cp);
   }
