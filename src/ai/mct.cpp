@@ -35,15 +35,22 @@ MCN *MCT::treePolicy() const {
   return node;
 }
 
-Move MCT::search() {
+void MCT::search() {
   while (intime()) {
     auto node = treePolicy();
     auto delta = defaultPolicy(node);
     backUp(node, delta);
   }
   auto choice = root->bestChild(0.0);
+  if (!choice) {
+    root->flip();
+    qDebug() << "AI Pass";
+    return;
+  }
   auto move = choice->move();
-  return move;
+  qDebug() << "AI: " << move.x() << move.y() << (char)move.type();
+  updateTree(move.x(), move.y());
+  emit decision(move.x(), move.y());
 }
 
 void MCT::backUp(MCN *node, const unsigned &delta) const {
@@ -67,15 +74,7 @@ void MCT::laozi(size_t const &x, size_t const &y) {
   qDebug() << "AI Laozi";
   updateTree(x, y);
   qDebug() << "Player:" << x << y;
-  if (!root->expandable()) {
-    root->flip();
-    qDebug() << "AI Pass";
-    return;
-  }
-  Move m = search();
-  qDebug() << "AI: " << m.x() << m.y() << (char)m.type();
-  updateTree(m.x(), m.y());
-  emit decision(m.x(), m.y());
+  search();
 }
 
 void MCT::reset(Config::Type type) {

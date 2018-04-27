@@ -13,7 +13,7 @@ void Rule::reset() {
     state_[init.x()][init.y()] = init.type();
   }
   player_ = Config::first;
-  // emit changed(Config::initPieces, availableMovement());
+  emit changed(Config::initPieces, availableMovement());
 }
 
 void Rule::laozi(size_t const &x, size_t const &y) {
@@ -29,7 +29,8 @@ void Rule::laozi(size_t const &x, size_t const &y) {
     if (available.size() == 0) {
       emit gameOver();
       qDebug() << "Game over";
-    }
+    } else
+      emit pass();
   }
 
   emit changed(movement, available);

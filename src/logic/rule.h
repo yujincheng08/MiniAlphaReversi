@@ -41,6 +41,7 @@ class Rule : public QObject {
  signals:
   void changed(Movement const &movement, Movement const &availableMovement);
   void gameOver();
+  void pass();
 
  public slots:
   void reset();

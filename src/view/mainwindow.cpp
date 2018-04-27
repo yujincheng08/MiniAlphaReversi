@@ -25,6 +25,7 @@ void MainWindow::createConnections() {
   connect(gameview, &GameView::clicked, rule_, &Rule::laozi);
 
   connect(rule_, &Rule::changed, gameview, &GameView::laozi);
+  connect(rule_, &Rule::pass, mct_, &MCT::search);
 
   connect(mct_, &MCT::decision, rule_, &Rule::laozi);
   connect(gameview, &GameView::clicked, mct_, &MCT::laozi);

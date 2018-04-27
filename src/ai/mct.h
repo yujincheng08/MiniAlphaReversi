@@ -16,13 +16,13 @@ class MCT : public QObject {
   explicit MCT(QObject *parent = nullptr);
   int defaultPolicy(MCN *node) const;
   MCN *treePolicy() const;
-  Move search();
 
  signals:
   void decision(size_t const &x, size_t const &y);
  public slots:
   void laozi(size_t const &x, size_t const &y);
   void reset(Config::Type type);
+  void search();
 
  private:
   MCN *root{nullptr};
