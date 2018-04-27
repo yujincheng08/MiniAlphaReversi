@@ -21,7 +21,7 @@ int MCT::defaultPolicy(MCN *node) const {
     state += rule_.apply(state, {move.x(), move.y(), player});
     player = ~player;
   }
-  return rule_.judge(state, node->type()) ? 1 : -1;
+  return rule_.judge(state, type_) ? 1 : -1;
 }
 
 MCN *MCT::treePolicy() const {
@@ -36,6 +36,10 @@ MCN *MCT::treePolicy() const {
 }
 
 void MCT::search() {
+  if (root->type() != type_) {
+    qDebug() << "Not AI's turn";
+    return;
+  }
   while (intime()) {
     auto node = treePolicy();
     auto delta = defaultPolicy(node);
@@ -43,8 +47,7 @@ void MCT::search() {
   }
   auto choice = root->bestChild(0.0);
   if (!choice) {
-    root->flip();
-    qDebug() << "AI Pass";
+    qDebug() << "I have no choice";
     return;
   }
   auto move = choice->move();
@@ -71,7 +74,6 @@ bool MCT::intime() {
 
 void MCT::laozi(size_t const &x, size_t const &y) {
   if (!rule_.valid(x, y, root->type(), root->state())) return;
-  qDebug() << "AI Laozi";
   updateTree(x, y);
   qDebug() << "Player:" << x << y;
   search();

@@ -11,7 +11,12 @@ MCN::MCN(State const &lastState, Type const &type, unsigned const &depth,
       depth_(depth),
       move_(move),
       rule_(rule),
-      remainMovement_(rule.availableMovement(type, state_)) {}
+      remainMovement_(rule.availableMovement(type_, state_)) {
+  if (remainMovement_.size() == 0) {
+    type_ = ~type_;
+    remainMovement_ = rule.availableMovement(type_, state_);
+  }
+}
 
 MCN *MCN::bestChild(double const &c) const {
   double bestValue = -qInf();

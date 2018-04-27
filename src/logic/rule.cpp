@@ -27,8 +27,10 @@ void Rule::laozi(size_t const &x, size_t const &y) {
     player_ = ~player_;
     available = availableMovement();
     if (available.size() == 0) {
+      emit changed(movement, available);
       emit gameOver();
       qDebug() << "Game over";
+      return;
     } else
       emit pass();
   }

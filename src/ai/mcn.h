@@ -41,7 +41,6 @@ class MCN : public QObject {
  signals:
 
  public slots:
-  inline void flip() { type_ = ~type_; }
 
  protected:
   explicit MCN(QObject *parent = nullptr);
