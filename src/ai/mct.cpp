@@ -67,6 +67,11 @@ void MCT::laozi(size_t const &x, size_t const &y) {
   qDebug() << "AI Laozi";
   updateTree(x, y);
   qDebug() << "Player:" << x << y;
+  if (!root->expandable()) {
+    root->flip();
+    qDebug() << "AI Pass";
+    return;
+  }
   Move m = search();
   qDebug() << "AI: " << m.x() << m.y() << (char)m.type();
   updateTree(m.x(), m.y());
