@@ -11,7 +11,6 @@ Pieces::Pieces(QGraphicsItem *parent) : QGraphicsItemGroup(parent) {
       pieces_[i][j] = piece;
     }
   }
-  reset();
 }
 
 void Pieces::reset() {

@@ -4,7 +4,6 @@
 
 MCT::MCT(QObject *parent) : QObject(parent) {
   moveToThread(thread_);
-  reset(Config::WHITE);
   thread_->start();
 }
 
@@ -93,6 +92,7 @@ void MCT::reset(Config::Type type) {
     }
   }
   root = new MCN(initstate + Config::initPieces, Config::first, 0u, rule_);
+  root->moveToThread(thread_);
 }
 
 void MCT::updateTree(const size_t &x, const size_t &y) {

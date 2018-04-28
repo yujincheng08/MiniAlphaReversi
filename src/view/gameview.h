@@ -26,7 +26,7 @@ class GameView : public QGraphicsView {
   QGraphicsScene *scene_{new QGraphicsScene(this)};
   Board *board_{new Board};
   Pieces *pieces_{new Pieces};
-  bool disabled_{false};
+  bool disabled_{true};
 };
 
 #endif  // GAMEVIEW_H
