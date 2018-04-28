@@ -25,8 +25,11 @@ void MainWindow::createConnections() {
   connect(gameview, &GameView::clicked, rule_, &Rule::laozi);
 
   connect(rule_, &Rule::changed, gameview, &GameView::laozi);
-  connect(rule_, &Rule::pass, mct_, &MCT::search);
+  connect(rule_, &Rule::pass, mct_, &MCT::search, Qt::QueuedConnection);
   connect(rule_, &Rule::gameOver, this, &MainWindow::reset);
-  connect(mct_, &MCT::decision, rule_, &Rule::laozi);
-  connect(gameview, &GameView::clicked, mct_, &MCT::laozi);
+  connect(mct_, &MCT::decision, rule_, &Rule::laozi, Qt::QueuedConnection);
+  connect(gameview, &GameView::clicked, mct_, &MCT::laozi,
+          Qt::QueuedConnection);
+  connect(mct_, &MCT::disableBoard, gameview, &GameView::disable,
+          Qt::QueuedConnection);
 }

@@ -2,7 +2,11 @@
 #include <QDebug>
 #include <QRandomGenerator>
 
-MCT::MCT(QObject *parent) : QObject(parent) { reset(Config::WHITE); }
+MCT::MCT(QObject *parent) : QObject(parent) {
+  moveToThread(thread_);
+  reset(Config::WHITE);
+  thread_->start();
+}
 
 int MCT::defaultPolicy(MCN *node) const {
   auto state = node->state();
@@ -35,11 +39,17 @@ MCN *MCT::treePolicy() const {
   return node;
 }
 
+MCT::~MCT() {
+  thread_->terminate();
+  thread_->wait();
+}
+
 void MCT::search() {
   if (root->type() != type_) {
     qDebug() << "Not AI's turn";
     return;
   }
+  emit disableBoard(true);
   QTime time = QTime::currentTime();
   while (time.msecsTo(QTime::currentTime()) < Config::timeLimit) {
     auto node = treePolicy();
@@ -55,6 +65,7 @@ void MCT::search() {
   qDebug() << "AI: " << move.x() << move.y() << (char)move.type();
   updateTree(move.x(), move.y());
   emit decision(move.x(), move.y());
+  emit disableBoard(false);
 }
 
 void MCT::backUp(MCN *node, const unsigned &delta) const {

@@ -16,6 +16,7 @@ void GameView::laozi(Config::Movement const &movement,
 
 void GameView::mousePressEvent(QMouseEvent *event) {
   QGraphicsView::mousePressEvent(event);
+  if (disabled_) return;
   // x and y should swap;
   auto x = event->x() / Config::PIECE_SIZE - 1;
   auto y = event->y() / Config::PIECE_SIZE - 1;

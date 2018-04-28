@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow {
  private:
   Rule *rule_{new Rule(this)};
   GameView *gameview{new GameView(this)};
-  MCT *mct_{new MCT(this)};
+  MCT *mct_{new MCT()};
 
   void createConnections();
 };

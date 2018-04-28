@@ -16,6 +16,7 @@ MCN::MCN(State const &lastState, Type const &type, unsigned const &depth,
     type_ = ~type_;
     remainMovement_ = rule.availableMovement(type_, state_);
   }
+  if (parent) moveToThread(parent->thread());
 }
 
 MCN *MCN::bestChild(double const &c) const {

@@ -17,6 +17,7 @@ class GameView : public QGraphicsView {
   void laozi(Config::Movement const &movement,
              Config::Movement const &avalialbe);
   inline void reset() { pieces_->reset(); }
+  inline void disable(bool disabled = true) { disabled_ = disabled; }
 
  protected:
   virtual void mousePressEvent(QMouseEvent *event) override;
@@ -25,6 +26,7 @@ class GameView : public QGraphicsView {
   QGraphicsScene *scene_{new QGraphicsScene(this)};
   Board *board_{new Board};
   Pieces *pieces_{new Pieces};
+  bool disabled_{false};
 };
 
 #endif  // GAMEVIEW_H
