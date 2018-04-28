@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThreadPool>
+#include <QTime>
 #include "config.h"
 #include "mcn.h"
 
@@ -33,7 +34,6 @@ class MCT : public QObject {
   void updateTree(size_t const &x, size_t const &y);
 
   void backUp(MCN *node, unsigned const &delta) const;
-  bool intime();
 };
 
 #endif  // MCT_H

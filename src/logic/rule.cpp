@@ -66,7 +66,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
   }
 
   // Right to left
-  if (x > 2u && state[x - 1u][y] == ~player) {
+  if (x >= 2u && state[x - 1u][y] == ~player) {
     auto range = x + 1u;
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y] == player) return true;
@@ -84,7 +84,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
   }
 
   // Bottom to top
-  if (y > 2u && state[x][y - 1u] == ~player) {
+  if (y >= 2u && state[x][y - 1u] == ~player) {
     auto range = y + 1u;
     for (size_t i = 2u; i < range; ++i) {
       if (state[x][y - i] == player) return true;
@@ -93,7 +93,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
   }
 
   // to topright
-  if (x < Config::SIZE - 2u && y < Config::SIZE - 1u &&
+  if (x < Config::SIZE - 2u && y < Config::SIZE - 2u &&
       state[x + 1u][y + 1u] == ~player) {
     auto range = qMin(Config::SIZE - x, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
@@ -103,7 +103,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
   }
 
   // to topleft
-  if (x > 2u && y < Config::SIZE - 2u && state[x - 1u][y + 1u] == ~player) {
+  if (x >= 2u && y < Config::SIZE - 2u && state[x - 1u][y + 1u] == ~player) {
     auto range = qMin(x + 1u, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y + i] == player) return true;
@@ -111,8 +111,8 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
     }
   }
 
-  // to bottom righ
-  if (x < Config::SIZE - 2u && y > 2u && state[x + 1u][y - 1u] == ~player) {
+  // to bottom right
+  if (x < Config::SIZE - 2u && y >= 2u && state[x + 1u][y - 1u] == ~player) {
     auto range = qMin(Config::SIZE - x, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x + i][y - i] == player) return true;
@@ -121,7 +121,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
   }
 
   // to bottom left
-  if (x > 2u && y > 2u && state[x - 1u][y - 1u] == ~player) {
+  if (x >= 2u && y >= 2u && state[x - 1u][y - 1u] == ~player) {
     auto range = qMin(x + 1u, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y - i] == player) return true;
@@ -176,7 +176,7 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   }
 
   // Right to left
-  if (x > 2u && state[x - 1u][y] == ~player) {
+  if (x >= 2u && state[x - 1u][y] == ~player) {
     auto range = x + 1u;
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y] == player)
@@ -200,7 +200,7 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   }
 
   // Bottom to top
-  if (y > 2u && state[x][y - 1u] == ~player) {
+  if (y >= 2u && state[x][y - 1u] == ~player) {
     auto range = y + 1u;
     for (size_t i = 2u; i < range; ++i) {
       if (state[x][y - i] == player)
@@ -222,7 +222,7 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   }
 
   // to topleft
-  if (x > 2u && y < Config::SIZE - 2u && state[x - 1u][y + 1u] == ~player) {
+  if (x >= 2u && y < Config::SIZE - 2u && state[x - 1u][y + 1u] == ~player) {
     auto range = qMin(x + 1u, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y + i] == player)
@@ -233,7 +233,7 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   }
 
   // to bottom right
-  if (x < Config::SIZE - 2u && y > 2u && state[x + 1u][y - 1u] == ~player) {
+  if (x < Config::SIZE - 2u && y >= 2u && state[x + 1u][y - 1u] == ~player) {
     auto range = qMin(Config::SIZE - x, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x + i][y - i] == player)
@@ -244,7 +244,7 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   }
 
   // to bottom left
-  if (x > 2u && y > 2u && state[x - 1u][y - 1u] == ~player) {
+  if (x >= 2u && y >= 2u && state[x - 1u][y - 1u] == ~player) {
     auto range = qMin(x + 1u, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
       if (state[x - i][y - i] == player)

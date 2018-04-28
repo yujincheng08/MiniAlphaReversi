@@ -40,7 +40,8 @@ void MCT::search() {
     qDebug() << "Not AI's turn";
     return;
   }
-  while (intime()) {
+  QTime time = QTime::currentTime();
+  while (time.msecsTo(QTime::currentTime()) < Config::timeLimit) {
     auto node = treePolicy();
     auto delta = defaultPolicy(node);
     backUp(node, delta);
@@ -61,15 +62,6 @@ void MCT::backUp(MCN *node, const unsigned &delta) const {
     node->backUp(delta);
     node = node->parent();
   }
-}
-
-bool MCT::intime() {
-  static unsigned counter = 0;
-  if (counter++ > 3) {
-    counter = 0;
-    return false;
-  }
-  return true;  // TODO
 }
 
 void MCT::laozi(size_t const &x, size_t const &y) {
