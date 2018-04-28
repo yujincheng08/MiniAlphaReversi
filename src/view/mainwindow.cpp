@@ -43,7 +43,16 @@ void MainWindow::createConnections() {
   connect(rule_, &Rule::pass, mct_, &MCT::search, Qt::QueuedConnection);
   connect(rule_, &Rule::gameOver, this, [this]() {
     gameview->disable();
-    QMessageBox::information(this, "Game over", "Who won!");
+    auto white = rule_->judge(Config::WHITE);
+    auto black = rule_->judge(Config::BLACK);
+    QString result;
+    if (black && white)
+      result = "both";
+    else if (black)
+      result = "black";
+    else if (white)
+      result = "white";
+    QMessageBox::information(this, "Game over", result + " won!");
   });
   connect(mct_, &MCT::decision, rule_, &Rule::laozi, Qt::QueuedConnection);
   connect(gameview, &GameView::clicked, mct_, &MCT::laozi,

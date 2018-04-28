@@ -38,6 +38,9 @@ class Rule : public QObject {
                          Config::Type const &player, State const &state) const;
 
   bool judge(State const &state, Config::Type const &player) const;
+  inline bool judge(Config::Type const &player) const {
+    return judge(state_, player);
+  }
  signals:
   void changed(Movement const &movement, Movement const &availableMovement);
   void gameOver();
