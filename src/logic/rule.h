@@ -41,6 +41,12 @@ class Rule : public QObject {
   inline bool judge(Config::Type const &player) const {
     return judge(state_, player);
   }
+
+  Movement getRivalMovement(State const &state, Move const &move) const {
+    auto newState = state + apply(state, move);
+    return availableMovement(~move.type(), newState);
+  }
+
  signals:
   void changed(Movement const &movement, Movement const &availableMovement);
   void gameOver();
