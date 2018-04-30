@@ -22,10 +22,10 @@ void Rule::laozi(size_t const &x, size_t const &y) {
   if (movement.size() == 0) return;
   state_ += movement;
   /* for debug */
-  for (const auto &row : state_) {
-    for (const auto &pos : row) std::cout << (char)pos << '\t';
-    std::cout << std::endl;
-  }
+  //  for (const auto &row : state_) {
+  //    for (const auto &pos : row) std::cout << (char)pos << '\t';
+  //    std::cout << std::endl;
+  //  }
   /* end debug */
   player_ = ~player_;
   auto available = availableMovement();

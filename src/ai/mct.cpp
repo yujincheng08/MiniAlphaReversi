@@ -55,7 +55,8 @@ void MCT::search() {
     auto delta = defaultPolicy(node);
     backUp(node, delta);
   }
-  auto choice = root->bestChild(0.0);
+  //  auto choice = root->bestChild(0.0);
+  auto choice = root->finalDecision(1.0);
   if (!choice) {
     qDebug() << "I have no choice";
     return;

@@ -21,6 +21,7 @@ class MCN : public QObject {
                MCN *parent = nullptr);
 
   MCN *bestChild(const double &c) const;
+  MCN *finalDecision(const double &c) const;
 
   double value(const double &c) const;
 
@@ -52,8 +53,12 @@ class MCN : public QObject {
   Move move_;
   Rule const &rule_;
   Movement remainMovement_;
-  unsigned N_{0u};
-  unsigned Q_{0u};
+  //  unsigned N_{0u};
+  //  unsigned Q_{0u};
+
+  int N_{0};
+  int Q_{0};
+  int priorityOf(size_t const &x, size_t const &y) const;
 };
 
 #endif  // MCN_H
