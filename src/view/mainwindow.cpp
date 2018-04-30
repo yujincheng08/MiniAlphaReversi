@@ -23,8 +23,6 @@ void MainWindow::createWidgets() {
   gameview->setSceneRect(
       QRect(0, 0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT));
   gameview->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  qDebug() << Config::WINDOW_WIDTH << Config::WINDOW_HEIGHT;
-  qDebug() << gameview->sizeHint();
   gameview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   gameview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   mainLayout->addWidget(gameview);

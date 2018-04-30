@@ -21,6 +21,12 @@ void Rule::laozi(size_t const &x, size_t const &y) {
   auto movement = apply(state_, {x, y, player_});
   if (movement.size() == 0) return;
   state_ += movement;
+  /* for debug */
+  for (const auto &row : state_) {
+    for (const auto &pos : row) std::cout << (char)pos << '\t';
+    std::cout << std::endl;
+  }
+  /* end debug */
   player_ = ~player_;
   auto available = availableMovement();
   if (available.size() == 0) {
@@ -169,8 +175,10 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (x < Config::SIZE - 2u && state[x + 1u][y] == ~player) {
     auto range = Config::SIZE - x;
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x + i][y] == player)
+      if (state[x + i][y] == player) {
         for (size_t j = 1u; j < i; ++j) movement.push_back({x + j, y, player});
+        break;
+      }
       if (!!state[x + i][y]) break;
     }
   }
@@ -179,10 +187,10 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (x >= 2u && state[x - 1u][y] == ~player) {
     auto range = x + 1u;
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x - i][y] == player)
-        for (size_t j = 1u; j < i; ++j) {
-          movement.push_back({x - j, y, player});
-        }
+      if (state[x - i][y] == player) {
+        for (size_t j = 1u; j < i; ++j) movement.push_back({x - j, y, player});
+        break;
+      }
       if (!!state[x - i][y]) break;
     }
   }
@@ -191,10 +199,10 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (y < Config::SIZE - 2u && state[x][y + 1u] == ~player) {
     auto range = Config::SIZE - y;
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x][y + i] == player)
-        for (size_t j = 1u; j < i; ++j) {
-          movement.push_back({x, y + j, player});
-        }
+      if (state[x][y + i] == player) {
+        for (size_t j = 1u; j < i; ++j) movement.push_back({x, y + j, player});
+        break;
+      }
       if (!!state[x][y + i]) break;
     }
   }
@@ -203,8 +211,10 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (y >= 2u && state[x][y - 1u] == ~player) {
     auto range = y + 1u;
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x][y - i] == player)
+      if (state[x][y - i] == player) {
         for (size_t j = 1u; j < i; ++j) movement.push_back({x, y - j, player});
+        break;
+      }
       if (!!state[x][y - i]) break;
     }
   }
@@ -214,9 +224,11 @@ const Rule::Movement Rule::apply(const Rule::State &state,
       state[x + 1u][y + 1u] == ~player) {
     auto range = qMin(Config::SIZE - x, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x + i][y + i] == player)
+      if (state[x + i][y + i] == player) {
         for (size_t j = 1u; j < i; ++j)
           movement.push_back({x + j, y + j, player});
+        break;
+      }
       if (!!state[x + i][y + i]) break;
     }
   }
@@ -225,9 +237,11 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (x >= 2u && y < Config::SIZE - 2u && state[x - 1u][y + 1u] == ~player) {
     auto range = qMin(x + 1u, Config::SIZE - y);
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x - i][y + i] == player)
+      if (state[x - i][y + i] == player) {
         for (size_t j = 1u; j < i; ++j)
           movement.push_back({x - j, y + j, player});
+        break;
+      }
       if (!!state[x - i][y + i]) break;
     }
   }
@@ -236,9 +250,11 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (x < Config::SIZE - 2u && y >= 2u && state[x + 1u][y - 1u] == ~player) {
     auto range = qMin(Config::SIZE - x, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x + i][y - i] == player)
+      if (state[x + i][y - i] == player) {
         for (size_t j = 1u; j < i; ++j)
           movement.push_back({x + j, y - j, player});
+        break;
+      }
       if (!!state[x + i][y - i]) break;
     }
   }
@@ -247,9 +263,11 @@ const Rule::Movement Rule::apply(const Rule::State &state,
   if (x >= 2u && y >= 2u && state[x - 1u][y - 1u] == ~player) {
     auto range = qMin(x + 1u, y + 1u);
     for (size_t i = 2u; i < range; ++i) {
-      if (state[x - i][y - i] == player)
+      if (state[x - i][y - i] == player) {
         for (size_t j = 1u; j < i; ++j)
           movement.push_back({x - j, y - j, player});
+        break;
+      }
       if (!!state[x - i][y - i]) break;
     }
   }
