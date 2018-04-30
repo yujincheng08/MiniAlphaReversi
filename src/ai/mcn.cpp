@@ -44,7 +44,7 @@ MCN *MCN::finalDecision(const double &c) const {
   double sum = 0;
   int count = 0;
   double alpha = 1;
-  double beta = 1.0;
+  double beta = 1;
 
   // TODO
   for (auto const &child : children()) {
@@ -52,13 +52,20 @@ MCN *MCN::finalDecision(const double &c) const {
 
     // priority
     int level = this->priorityOf(child->move_.x(), child->move_.y());
-    qDebug() << value << alpha * (2 - level);
-    value = value + alpha * (2 - level);
+    if (level >= 5) {
+      level -= 10;
+    }
+    value = value + alpha * 1.0 / (level + 0.01);
 
-    // action
+    // action，这里给对方的action，是否应该加权求和？
     double actionRate =
         1.0 /
-        (rule_.getRivalMovement(child->state_, child->move_).length() + 1);
+        (child->rule_.getRivalMovement(child->state_, child->move_).length() +
+         0.01);
+    qDebug()
+        << "action" << value << beta * actionRate << child->move_.x()
+        << child->move_.y()
+        << child->rule_.getRivalMovement(child->state_, child->move_).length();
     value = value * beta * actionRate;
     value = value > 0 ? value : 0;
 
@@ -85,12 +92,10 @@ MCN *MCN::finalDecision(const double &c) const {
 
   double choice = QRandomGenerator::global()->bounded(1.0);
   double accumulate = 0;
+  best = tmpBest;
   foreach (double key, dist.keys()) {
     if (accumulate < choice && accumulate + key >= choice) {
-      if (key > 1.0 / count)
-        best = dist[key];
-      else
-        best = tmpBest;
+      if (key > 1.0 / count) best = dist[key];
       qDebug() << "x" << best->move_.x() << "y" << best->move_.y() << choice;
       break;
     }
