@@ -11,20 +11,26 @@ int MCT::defaultPolicy(MCN *node) const {
   auto state = node->state();
   auto player = node->type();
   unsigned over = 0u;
-  while (over < 2u) {
-    auto priorityMoves =
-        rule_.priorityMoves(Config::priorityTable, player, state);
-    if (priorityMoves.size() == 0) {
+  auto remainTime = Config::simulationTime;
+  int reward = 0;
+  while (remainTime--) {
+    while (over < 2u) {
+      auto priorityMoves =
+          rule_.priorityMoves(Config::priorityTable, player, state);
+      if (priorityMoves.size() == 0) {
+        player = ~player;
+        ++over;
+        continue;
+      }
+      over = 0u;
+      auto move = priorityMoves[QRandomGenerator::global()->bounded(
+          priorityMoves.size())];
+      state += rule_.apply(state, {move.x(), move.y(), player});
       player = ~player;
-      ++over;
-      continue;
     }
-    over = 0u;
-    auto move = priorityMoves[0];
-    state += rule_.apply(state, {move.x(), move.y(), player});
-    player = ~player;
+    reward += rule_.judge(state, type_);
   }
-  return rule_.judge(state, type_) ? 1 : -1;
+  return reward / Config::simulationTime;
 }
 
 MCN *MCT::treePolicy() const {
