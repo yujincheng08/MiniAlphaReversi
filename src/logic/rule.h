@@ -37,8 +37,8 @@ class Rule : public QObject {
   Movement priorityMoves(Config::PriorityTable const &priorityTable,
                          Config::Type const &player, State const &state) const;
 
-  int judge(State const &state, Config::Type const &player) const;
-  inline int judge(Config::Type const &player) const {
+  bool judge(State const &state, Config::Type const &player) const;
+  inline bool judge(Config::Type const &player) const {
     return judge(state_, player);
   }
 

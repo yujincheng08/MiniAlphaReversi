@@ -44,7 +44,7 @@ void Rule::laozi(size_t const &x, size_t const &y) {
   emit changed(movement, available);
 }
 
-int Rule::judge(State const &state, Config::Type const &player) const {
+bool Rule::judge(State const &state, Config::Type const &player) const {
   Q_ASSERT(player != Config::EMPTY);
   unsigned white = 0u;
   unsigned black = 0u;
@@ -54,7 +54,7 @@ int Rule::judge(State const &state, Config::Type const &player) const {
         ++white;
       else if (state[i][j] == Config::BLACK)
         ++black;
-  return player == Config::BLACK ? black - white : white - black;
+  return player == Config::BLACK ? black >= white : white <= black;
 }
 
 bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,

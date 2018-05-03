@@ -17,7 +17,7 @@ int MCT::defaultPolicy(MCN *node) const {
     auto simulateCount = node->depth() + 4;
     while (over < 2u) {
       auto movement =
-          simulateCount > 54u
+          simulateCount > Config::laterStage
               ? rule_.availableMovement(player, state)
               : rule_.priorityMoves(Config::priorityTable, player, state);
       if (movement.size() == 0) {
@@ -32,7 +32,7 @@ int MCT::defaultPolicy(MCN *node) const {
       state += rule_.apply(state, {move.x(), move.y(), player});
       player = ~player;
     }
-    reward += rule_.judge(state, type_);
+    reward += rule_.judge(state, type_) ? 1 : 0;
   }
   return reward / Config::simulationTime;
 }

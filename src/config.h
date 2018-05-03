@@ -16,6 +16,8 @@ static unsigned constexpr WINDOW_HEIGHT = (SIZE + 2) * PIECE_SIZE;
 
 static int constexpr timeLimit = 30000;
 
+static unsigned constexpr laterStage = 54u;
+
 enum Type : char { WHITE = 'w', BLACK = 'b', EMPTY = 'e' };
 
 static Type constexpr first = BLACK;

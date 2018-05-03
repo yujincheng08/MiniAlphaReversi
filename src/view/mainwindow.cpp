@@ -41,8 +41,8 @@ void MainWindow::createConnections() {
   connect(rule_, &Rule::pass, mct_, &MCT::search, Qt::QueuedConnection);
   connect(rule_, &Rule::gameOver, this, [this]() {
     gameview->disable();
-    auto white = rule_->judge(Config::WHITE) >= 0;
-    auto black = rule_->judge(Config::BLACK) >= 0;
+    auto white = rule_->judge(Config::WHITE);
+    auto black = rule_->judge(Config::BLACK);
     QString result;
     if (black && white)
       result = "both";
