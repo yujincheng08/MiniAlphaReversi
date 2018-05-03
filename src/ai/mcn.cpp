@@ -34,7 +34,7 @@ MCN *MCN::bestChild(double const &c) const {
   return best;  // nullptr means its leaf;
 }
 
-MCN *MCN::finalDecision(const double &c) const {
+MCN *MCN::finalDecision(const double &c, int turn) const {
   double bestValue = -qInf();
   MCN *best = nullptr;
   MCN *tmpBest = nullptr;
@@ -45,6 +45,11 @@ MCN *MCN::finalDecision(const double &c) const {
   int count = 0;
   double alpha = 1;
   double beta = 1;
+  bool skip = false;
+
+  if ((unsigned)turn >= Config::laterStage) {
+    skip = true;
+  }
 
   // TODO
   for (auto const &child : children()) {
@@ -55,25 +60,25 @@ MCN *MCN::finalDecision(const double &c) const {
     if (level >= 5) {
       level -= 10;
     }
-    value = value + alpha * 1.0 / (level + 0.01);
+    if (!skip) {
+      value = value + alpha * 1.0 / (level + 0.01);
+    }
 
-    // action，这里给对方的action，是否应该加权求和？
+    // action
     double actionRate =
         1.0 /
         (child->rule_.getRivalMovement(child->state_, child->move_).length() +
          0.01);
-    qDebug()
-        << "action" << value << beta * actionRate << child->move_.x()
-        << child->move_.y()
-        << child->rule_.getRivalMovement(child->state_, child->move_).length();
-    value = value * beta * actionRate;
+
+    if (!skip) {
+      value = value * beta * actionRate;
+    }
+
     value = value > 0 ? value : 0;
 
     map[value] = child;
-
     sum += value;
     count++;
-
     if (bestValue < value) {
       bestValue = value;
       tmpBest = child;
@@ -84,11 +89,7 @@ MCN *MCN::finalDecision(const double &c) const {
     return tmpBest;
   }
 
-  foreach (double key, map.keys()) {
-    dist[key / sum] = map[key];
-    Move m = map[key]->move_;
-    qDebug() << "x" << m.x() << "y" << m.y() << key / sum;
-  }
+  foreach (double key, map.keys()) { dist[key / sum] = map[key]; }
 
   double choice = QRandomGenerator::global()->bounded(1.0);
   double accumulate = 0;
@@ -96,12 +97,10 @@ MCN *MCN::finalDecision(const double &c) const {
   foreach (double key, dist.keys()) {
     if (accumulate < choice && accumulate + key >= choice) {
       if (key > 1.0 / count) best = dist[key];
-      qDebug() << "x" << best->move_.x() << "y" << best->move_.y() << choice;
       break;
     }
     accumulate += key;
   }
-  qDebug() << "---------------------------------";
   return best;
 }
 

@@ -16,7 +16,7 @@ static unsigned constexpr WINDOW_HEIGHT = (SIZE + 2) * PIECE_SIZE;
 
 static int constexpr timeLimit = 30000;
 
-static unsigned constexpr laterStage = 54u;
+static unsigned constexpr laterStage = 44u;
 
 enum Type : char { WHITE = 'w', BLACK = 'b', EMPTY = 'e' };
 
@@ -31,7 +31,7 @@ using PriorityTable = QList<QVector<Position>>;
 // The constant of calculating the value used by choosing the best child.
 static double constexpr Cp = 1.0;
 
-static unsigned constexpr simulationTime = 3u;  // Generate three times.
+static unsigned constexpr simulationTime = 1u;  // Generate three times.
 
 inline Type operator~(Type const &type) {
   return type == BLACK ? WHITE : type != EMPTY ? BLACK : EMPTY;

@@ -68,7 +68,7 @@ void MCT::search() {
   //  auto choice = root->bestChild(0.0);
   auto piecesCount = root->depth() + 4;
   qDebug() << "Total pieces:" << piecesCount;
-  auto choice = root->finalDecision(1.0);
+  auto choice = root->finalDecision(1.0, piecesCount);
   if (!choice) {
     qDebug() << "I have no choice";
     return;

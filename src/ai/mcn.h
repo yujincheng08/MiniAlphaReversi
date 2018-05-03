@@ -21,7 +21,7 @@ class MCN : public QObject {
                MCN *parent = nullptr);
 
   MCN *bestChild(const double &c) const;
-  MCN *finalDecision(const double &c) const;
+  MCN *finalDecision(const double &c, int turn) const;
 
   double value(const double &c) const;
 
