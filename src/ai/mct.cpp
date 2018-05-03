@@ -14,17 +14,21 @@ int MCT::defaultPolicy(MCN *node) const {
   auto remainTime = Config::simulationTime;
   int reward = 0;
   while (remainTime--) {
+    auto simulateCount = node->depth() + 4;
     while (over < 2u) {
-      auto priorityMoves =
-          rule_.priorityMoves(Config::priorityTable, player, state);
-      if (priorityMoves.size() == 0) {
+      auto movement =
+          simulateCount > 54u
+              ? rule_.availableMovement(player, state)
+              : rule_.priorityMoves(Config::priorityTable, player, state);
+      if (movement.size() == 0) {
         player = ~player;
         ++over;
         continue;
       }
+      ++simulateCount;
       over = 0u;
-      auto move = priorityMoves[QRandomGenerator::global()->bounded(
-          priorityMoves.size())];
+      auto move =
+          movement[QRandomGenerator::global()->bounded(movement.size())];
       state += rule_.apply(state, {move.x(), move.y(), player});
       player = ~player;
     }
@@ -62,6 +66,8 @@ void MCT::search() {
     backUp(node, delta);
   }
   //  auto choice = root->bestChild(0.0);
+  auto piecesCount = root->depth() + 4;
+  qDebug() << "Total pieces:" << piecesCount;
   auto choice = root->finalDecision(1.0);
   if (!choice) {
     qDebug() << "I have no choice";
