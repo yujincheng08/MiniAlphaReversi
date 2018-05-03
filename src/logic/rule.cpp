@@ -54,7 +54,7 @@ bool Rule::judge(State const &state, Config::Type const &player) const {
         ++white;
       else if (state[i][j] == Config::BLACK)
         ++black;
-  return player == Config::BLACK ? black >= white : white <= black;
+  return player == Config::BLACK ? black >= white : white >= black;
 }
 
 bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
