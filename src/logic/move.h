@@ -10,6 +10,9 @@ namespace Config {
 enum Type : char;
 }
 
+/*
+ * Move with x and y and type, or player that perform this move
+ */
 class Move : public std::tuple<size_t, size_t, Config::Type> {
  public:
   inline Move(size_t const &x, size_t const &y, Config::Type const &t)

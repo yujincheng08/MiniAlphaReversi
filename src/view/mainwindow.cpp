@@ -19,6 +19,7 @@ void MainWindow::reset(Config::Type AIType) {
 }
 
 void MainWindow::createWidgets() {
+  // create widgets and manage layout.
   auto mainLayout = new QVBoxLayout();
   gameview->setSceneRect(
       QRect(0, 0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT));
@@ -41,6 +42,7 @@ void MainWindow::createConnections() {
   connect(rule_, &Rule::pass, mct_, &MCT::search, Qt::QueuedConnection);
   connect(rule_, &Rule::gameOver, this, [this]() {
     gameview->disable();
+    // judge who won.
     auto white = rule_->judge(Config::WHITE);
     auto black = rule_->judge(Config::BLACK);
     QString result;

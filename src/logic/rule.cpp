@@ -2,9 +2,13 @@
 #include <QDebug>
 #include <iostream>
 
-Rule::Rule(QObject *parent) : QObject(parent) { reset(); }
+Rule::Rule(QObject *parent) : QObject(parent) {
+  // reset when constructed.
+  reset();
+}
 
 void Rule::reset() {
+  // construct the initial state.
   for (auto &row : state_) {
     row.fill(Config::EMPTY, Config::SIZE);
   }
@@ -12,35 +16,35 @@ void Rule::reset() {
     Q_ASSERT(init.x() < Config::SIZE && init.y() < Config::SIZE);
     state_[init.x()][init.y()] = init.type();
   }
+  // the first player.
   player_ = Config::first;
+  // now new changes.
   emit changed(Config::initPieces, availableMovement());
 }
 
 void Rule::laozi(size_t const &x, size_t const &y) {
   Q_ASSERT(player_ != Config::EMPTY && x < Config::SIZE && y < Config::SIZE);
+  // apply movement and switch player.
   auto movement = apply(state_, {x, y, player_});
   if (movement.size() == 0) return;
   state_ += movement;
-  /* for debug */
-  //  for (const auto &row : state_) {
-  //    for (const auto &pos : row) std::cout << (char)pos << '\t';
-  //    std::cout << std::endl;
-  //  }
-  /* end debug */
   player_ = ~player_;
   auto available = availableMovement();
+  // no movement available, swtich player.
   if (available.size() == 0) {
     player_ = ~player_;
     available = availableMovement();
+    // again no movement avaliable, game over.
     if (available.size() == 0) {
       emit changed(movement, available);
       emit gameOver();
       qDebug() << "Game over";
       return;
     } else
+      // pass
       emit pass();
   }
-
+  // emit change
   emit changed(movement, available);
 }
 
@@ -48,6 +52,7 @@ bool Rule::judge(State const &state, Config::Type const &player) const {
   Q_ASSERT(player != Config::EMPTY);
   unsigned white = 0u;
   unsigned black = 0u;
+  // simply compare the pieces.
   for (unsigned i = 0; i < Config::SIZE; ++i)
     for (unsigned j = 0; j < Config::SIZE; ++j)
       if (state[i][j] == Config::WHITE)
@@ -140,6 +145,7 @@ bool Rule::valid(size_t const &x, size_t const &y, Config::Type const &player,
 Rule::Movement Rule::availableMovement(Config::Type const &player,
                                        const State &state) const {
   Movement movement;
+  // simply check all position.
   for (size_t i = 0u; i < Config::SIZE; ++i)
     for (size_t j = 0u; j < Config::SIZE; ++j)
       if (valid(i, j, player, state)) movement.push_back({i, j, player});
@@ -150,6 +156,7 @@ Rule::Movement Rule::priorityMoves(Config::PriorityTable const &priorityTable,
                                    Config::Type const &player,
                                    const State &state) const {
   Movement movement;
+  // simply iterate the priority table
   for (auto const &level : priorityTable) {
     for (auto const &position : level) {
       if (valid(position.x(), position.y(), player, state))

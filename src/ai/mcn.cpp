@@ -13,17 +13,21 @@ MCN::MCN(State const &lastState, Type const &type, unsigned const &depth,
       move_(move),
       rule_(rule),
       remainMovement_(rule.availableMovement(type_, state_)) {
+  // if no avaliable movement, skip to the opposite player.
   if (remainMovement_.size() == 0) {
     type_ = ~type_;
     remainMovement_ = rule.availableMovement(type_, state_);
   }
+  // move the parent's thread.
   if (parent) moveToThread(parent->thread());
 }
 
 MCN *MCN::bestChild(double const &c) const {
+  // initial best value is minus infinity.
   double bestValue = -qInf();
   MCN *best = nullptr;
 
+  // iterate all the children to get the best one.
   for (auto const &child : children()) {
     double value = child->value(c);
     if (bestValue < value) {
@@ -31,7 +35,8 @@ MCN *MCN::bestChild(double const &c) const {
       best = child;
     }
   }
-  return best;  // nullptr means its leaf;
+  // nullptr means its leaf;
+  return best;
 }
 
 MCN *MCN::finalDecision(const double &c, int turn) const {
@@ -111,34 +116,44 @@ MCN *MCN::finalDecision(const double &c, int turn) const {
 
 MCN *MCN::expand() {
   if (expandable()) {
+    // randomly choose one children that is not expeneded and return it.
     auto choice = QRandomGenerator::global()->bounded(remainMovement_.size());
     auto move = remainMovement_.takeAt(choice);
     return new MCN(state_, ~type_, depth_ + 1, rule_, move, this);
   }
+  // return itself if not expandable.
   return this;
 }
 
 void MCN::backUp(int delta) {
+  // update N and Q.
   ++N_;
   Q_ += delta;
 }
 
 QList<MCN *> MCN::children() const {
   QList<MCN *> result;
+  // iterate all the children and cast to MCN.
   for (auto child : QObject::children())
     result.append(dynamic_cast<MCN *>(child));
   return result;
 }
 
-MCN *MCN::parent() const { return dynamic_cast<MCN *>(QObject::parent()); }
+MCN *MCN::parent() const {
+  // cast parent to MCN.
+  return dynamic_cast<MCN *>(QObject::parent());
+}
 
 double MCN::value(double const &c) const {
+  // N must not be 0.
   Q_ASSERT(N_ != 0.0);
+  // calulate by formula.
   double value = c * qSqrt(2.0 * qLn(parent()->N_) / N_) + Q_ * 1.0 / N_;
   return value;
 }
 
 int MCN::priorityOf(const size_t &x, const size_t &y) const {
+  // iterate the priority table and get the priority level.
   for (int i = 0; i < Config::priorityTable.length(); i++) {
     for (int j = 0; j < Config::priorityTable[i].length(); j++) {
       if (Config::priorityTable[i][j].x() == x &&

@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
   qputenv("QT_DEVICE_PIXEL_RATIO", QByteArray("auto"));
 #endif
   QApplication a(argc, argv);
+  // new and show mainwindow
   MainWindow w;
   w.show();
 

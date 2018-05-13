@@ -8,6 +8,7 @@ Board::Board(QGraphicsItem *parent) : QGraphicsItemGroup(parent) {
 }
 
 void Board::drawLines() {
+  // simply draw by iteration.
   for (unsigned i = 0; i < LINES_COUNT; ++i) {
     new QGraphicsLineItem(Config::PIECE_SIZE + i * Config::PIECE_SIZE,
                           Config::PIECE_SIZE,

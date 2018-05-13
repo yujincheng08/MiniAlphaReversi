@@ -3,6 +3,10 @@
 
 #include <tuple>
 
+/*
+ * A position of the borad with x and y
+ */
+
 class Position : public std::tuple<size_t, size_t> {
  public:
   inline Position(size_t const &x, size_t const &y) : tuple({x, y}) {}
