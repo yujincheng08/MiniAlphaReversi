@@ -51,7 +51,6 @@ MCN *MCN::finalDecision(const double &c, int turn) const {
     skip = true;
   }
 
-  // TODO
   for (auto const &child : children()) {
     double value = child->value(c);
 
@@ -74,6 +73,7 @@ MCN *MCN::finalDecision(const double &c, int turn) const {
       value = value * beta * actionRate;
     }
 
+    // ensure value >=0 in Roulette selection algorithm
     value = value > 0 ? value : 0;
 
     map[value] = child;
@@ -89,16 +89,21 @@ MCN *MCN::finalDecision(const double &c, int turn) const {
     return tmpBest;
   }
 
+  // normalization
   foreach (double key, map.keys()) { dist[key / sum] = map[key]; }
 
+  // Roulette selection algorithm
   double choice = QRandomGenerator::global()->bounded(1.0);
   double accumulate = 0;
   best = tmpBest;
   foreach (double key, dist.keys()) {
+    // the random number is in this section
+    // choose this node
     if (accumulate < choice && accumulate + key >= choice) {
       if (key > 1.0 / count) best = dist[key];
       break;
     }
+    // next section
     accumulate += key;
   }
   return best;
